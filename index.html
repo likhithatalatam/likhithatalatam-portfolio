@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Likhitha Talatam — MERN Stack Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/framer-motion@10.18.0/dist/framer-motion.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+
+  <style>
+    :root {
+      --bg: #0A0A0F;
+      --bg2: #11111B;
+      --panel: #15151F;
+      --line: rgba(255, 255, 255, 0.08);
+      --ink: #F2F2F5;
+      --muted: #9A9AAE;
+      --violet: #8B5CF6;
+      --lime: #D4FF3F;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    .display {
+      font-family: 'Bricolage Grotesque', sans-serif;
+    }
+
+    a {
+      color: var(--lime);
+      text-decoration: none;
+    }
+
+    ::selection {
+      background: var(--violet);
+      color: #fff;
+    }
+
+    /* Cursor glow */
+    .cursor-glow {
+      position: fixed;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.18), transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      transition: opacity .3s;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.3rem 6%;
+      background: rgba(10, 10, 15, 0.65);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+    }
+
+    .logo .dot {
+      color: var(--lime);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .resume-btn {
+      background: var(--lime);
+      color: #0A0A0F;
+      padding: 0.55rem 1.3rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .resume-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(212, 255, 63, 0.25);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 7rem 6% 4rem;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+    }
+
+    .blob1 {
+      width: 500px;
+      height: 500px;
+      background: var(--violet);
+      top: -150px;
+      right: -100px;
+    }
+
+    .blob2 {
+      width: 400px;
+      height: 400px;
+      background: var(--lime);
+      bottom: -150px;
+      left: -100px;
+      opacity: 0.15;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+      border: 1px solid var(--line);
+      padding: 0.5rem 1.1rem;
+      border-radius: 100px;
+    }
+
+    .eyebrow .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 0 0 rgba(212, 255, 63, 0.7);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(212, 255, 63, 0.5);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(212, 255, 63, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(212, 255, 63, 0);
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 4.5vw, 6rem);
+      font-weight: 800;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 .grad {
+      background: linear-gradient(135deg, var(--violet), var(--lime));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero .role {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      color: var(--muted);
+      max-width: 1000px;
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+      margin-top: 2rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: transform .2s, box-shadow .2s, background .2s;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--violet);
+      transform: translateY(-2px);
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      padding-top: 2rem;
+    }
+
+    .hero-meta .item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .hero-meta .item .num {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
+
+    .hero-meta .item .label {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* Section shared */
+    section {
+      padding: 6rem 6%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-head {
+      margin-bottom: 3rem;
+    }
+
+    .section-tag {
+      font-size: 0.85rem;
+      color: var(--lime);
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      max-width: 600px;
+      margin-top: 0.8rem;
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text {
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .about-text strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .about-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1.8rem;
+    }
+
+    .about-card h4 {
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+    }
+
+    .about-card .loc {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-card .links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+    }
+
+    @media(max-width:850px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .skill-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.6rem;
+      transition: border-color .3s, transform .3s;
+    }
+
+    .skill-card:hover {
+      border-color: var(--violet);
+      transform: translateY(-4px);
+    }
+
+    .skill-card .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--violet), #6D28D9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .skill-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-size: 0.78rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+    }
+
+    /* Projects */
+    .project-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      transition: border-color .3s;
+    }
+
+    .project-card:hover {
+      border-color: var(--violet);
+    }
+
+    .project-card.reverse {
+      grid-template-columns: 1fr 1.1fr;
+    }
+
+    .project-card.reverse .project-visual {
+      order: 2;
+    }
+
+    .project-visual {
+      position: relative;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(212, 255, 63, 0.06));
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-visual img {
+      width: 530px;
+      height: stretch;
+    }
+
+    .mock-browser {
+      width: 88%;
+      border-radius: 10px;
+      background: #1C1C28;
+      border: 1px solid var(--line);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .mock-bar {
+      display: flex;
+      gap: 6px;
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mock-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #3A3A48;
+    }
+
+    .mock-body {
+      padding: 1.2rem;
+    }
+
+    .mock-line {
+      height: 8px;
+      border-radius: 4px;
+      background: #2A2A38;
+      margin-bottom: 0.6rem;
+    }
+
+    .mock-line.w60 {
+      width: 60%;
+    }
+
+    .mock-line.w40 {
+      width: 40%;
+    }
+
+    .mock-line.w80 {
+      width: 80%;
+    }
+
+    .mock-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      margin-top: 0.8rem;
+    }
+
+    .mock-box {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(212, 255, 63, 0.15));
+    }
+
+    .mock-pill {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      background: rgba(212, 255, 63, 0.12);
+      color: var(--lime);
+      margin-top: 0.8rem;
+      font-weight: 600;
+    }
+
+    .project-info {
+      padding: 2.4rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-info .ptag {
+      font-size: 0.8rem;
+      color: var(--lime);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .project-info h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .project-info p {
+      color: var(--muted);
+      font-size: 0.97rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .project-info .stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .project-info .stack-row .tag {
+      color: var(--ink);
+      background: rgba(139, 92, 246, 0.1);
+      border-color: rgba(139, 92, 246, 0.25);
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      padding: 0.6rem 1.2rem;
+      border-radius: 100px;
+      width: fit-content;
+      transition: border-color .2s, color .2s;
+    }
+
+    .project-link:hover {
+      border-color: var(--lime);
+      color: var(--lime);
+    }
+
+    @media(max-width:800px) {
+
+      .project-card,
+      .project-card.reverse {
+        grid-template-columns: 1fr;
+      }
+
+      .project-card.reverse .project-visual {
+        order: 0;
+      }
+    }
+
+    /* Experience */
+    .exp-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 2rem;
+    }
+
+    .exp-card .when {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--lime);
+    }
+
+    .exp-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .exp-card .org {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .exp-card ul {
+      color: var(--muted);
+      font-size: 0.96rem;
+      padding-left: 1.2rem;
+    }
+
+    .exp-card li {
+      margin-bottom: 0.4rem;
+    }
+
+    @media(max-width:700px) {
+      .exp-card {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+      }
+    }
+
+    /* Achievements */
+    .achieve-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .achieve-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform .3s, border-color .3s;
+    }
+
+    .achieve-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--lime);
+    }
+
+    .achieve-card .badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: rgba(212, 255, 63, 0.12);
+      color: var(--lime);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .achieve-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .achieve-card p {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .achieve-card .meta {
+      display: block;
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--violet);
+      font-weight: 600;
+    }
+
+    /* Contact */
+    .contact-card {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(212, 255, 63, 0.05));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 4rem 3rem;
+      text-align: center;
+    }
+
+    .contact-card h2 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      margin-bottom: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .contact-card p {
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 2rem;
+    }
+
+    .contact-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+
+    footer {
+      text-align: center;
+      padding: 3rem 6%;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--line);
+    }
+
+    @media(max-width:700px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero-meta {
+        gap: 1.8rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { motion, useScroll, useTransform } = window.Motion || window.framerMotion;
+
+    function CursorGlow() {
+      const [pos, setPos] = React.useState({ x: -500, y: -500 });
+      React.useEffect(() => {
+        const move = e => setPos({ x: e.clientX, y: e.clientY });
+        window.addEventListener('mousemove', move);
+        return () => window.removeEventListener('mousemove', move);
+      }, []);
+      return <div className="cursor-glow" style={{ left: pos.x, top: pos.y }} />;
+    }
+
+    const fadeUp = {
+      hidden: { opacity: 0, y: 30 },
+      show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+    };
+    const stagger = {
+      hidden: {},
+      show: { transition: { staggerChildren: 0.1 } }
+    };
+
+    function Reveal({ children, className, delay = 0 }) {
+      return (
+        <motion.div
+          className={className}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={fadeUp}
+          transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {children}
+        </motion.div>
+      );
+    }
+
+    function Nav() {
+      return (
+        <nav>
+          <div className="logo">Likhitha Talatam<span className="dot"></span></div>
+          <div className="nav-links">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#achievements">Achievements</a>
+            <a href="#contact">Contact</a>
+            <a
+              className="resume-btn"
+              href="./LikhithaTalatam_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download CV
+            </a>
+          </div>
+        </nav>
+      );
+    }
+
+    function Hero() {
+      return (
+        <section className="hero">
+          <div className="hero-bg">
+            <motion.div className="blob blob1"
+              animate={{ x: [0, 40, 0], y: [0, 30, 0] }}
+              transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }} />
+            <motion.div className="blob blob2"
+              animate={{ x: [0, -30, 0], y: [0, -20, 0] }}
+              transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} />
+          </div>
+          <motion.div className="hero-content" initial="hidden" animate="show" variants={stagger}>
+            <motion.div className="eyebrow" variants={fadeUp}>
+              <span className="pulse"></span> Available for fresher roles
+            </motion.div>
+            <motion.h1 variants={fadeUp}>
+              Likhitha Talatam —<br />
+              <span className="grad">Software Developer</span>
+            </motion.h1>
+            <motion.p className="role" variants={fadeUp}>
+              Hands-on experience building full-stack web applications, eCommerce platforms, and real-time systems using MongoDB, Express.js, React.js, and Node.js. Skilled in RESTful APIs, JWT authentication, and responsive UI development. Published research contributor with strong problem-solving and collaborative development skills.
+            </motion.p>
+            <motion.div className="hero-cta" variants={fadeUp}>
+              <a className="btn btn-primary" href="#projects">View Projects →</a>
+              <a className="btn btn-outline" href="mailto:talatamlikhitha844@gmail.com">Get in Touch</a>
+            </motion.div>
+            <motion.div className="hero-meta" variants={fadeUp}>
+              <div className="item"><span className="num">2</span><span className="label">Full-Stack Projects</span></div>
+              <div className="item"><span className="num">1</span><span className="label">Internship — Smart Bridge</span></div>
+              <div className="item"><span className="num">7.7</span><span className="label">CGPA / 10</span></div>
+              <div className="item"><span className="num">1</span><span className="label">Published Research Paper</span></div>
+            </motion.div>
+          </motion.div>
+        </section>
+      );
+    }
+
+    function About() {
+      return (
+        <section id="about">
+          <Reveal className="section-head">
+            <div className="section-tag">About</div>
+            <h2 className="section-title">Profile</h2>
+          </Reveal>
+          <div className="about-grid">
+            <Reveal className="about-text" delay={0.05}>
+              <p>
+                I'm a <strong>Computer Science and Engineering graduate</strong> from Ideal Institute of Technology, Kakinada, with hands-on experience building applications using the <strong>MERN stack</strong>. My work spans eCommerce platforms, real-time chat systems, and secure authentication using JWT and role-based access control. I also have foundational knowledge of <strong>Generative AI and AWS cloud concepts</strong>.
+              </p>
+
+              <br />
+
+              <p>
+                I follow Agile/Scrum practices and collaborate effectively using Git and GitHub. I have also contributed to a <strong>published research paper on AI-driven automation</strong>. I'm currently looking for <strong>fresher Software Developer and MERN Stack Developer</strong> roles where I can apply my skills, continue learning, and contribute to meaningful projects.
+              </p>
+            </Reveal>
+            <Reveal className="about-card" delay={0.15}>
+              <h4>Location</h4>
+              <div className="loc">Kakinada, Andhra Pradesh, India</div>
+              <h4>Connect</h4>
+              <div className="links">
+                <a href="mailto:talatamlikhitha844@gmail.com">talatamlikhitha844@gmail.com</a>
+                <a href="tel:+919666918949">+91 9666918949</a>
+                <a href="https://linkedin.com/in/likhitha-talatam" target="_blank">linkedin.com/in/likhitha-talatam</a>
+                <a href="https://github.com/likhithatalatam" target="_blank">github.com/likhithatalatam</a>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      );
+    }
+
+    const skillData = [
+      {
+        icon: "FE",
+        title: "Frontend",
+        items: [
+          "HTML5",
+          "CSS3",
+          "JavaScript (ES6+)",
+          "React.js",
+          "Bootstrap",
+          "Responsive Design"
+        ]
+      },
+      {
+        icon: "BE",
+        title: "Backend",
+        items: [
+          "Node.js",
+          "Express.js",
+          "REST API Design"
+        ]
+      },
+      {
+        icon: "DB",
+        title: "Database",
+        items: [
+          "MongoDB",
+          "MongoDB Schema Design",
+          "CRUD Operations",
+          "MySQL"
+        ]
+      },
+      {
+        icon: "AU",
+        title: "Authentication",
+        items: [
+          "JWT",
+          "Role-Based Access Control (RBAC)"
+        ]
+      },
+      {
+        icon: "AI",
+        title: "AI & GenAI",
+        items: [
+          "GenAI Fundamentals",
+          "Prompt Engineering",
+          "AI/ML Fundamentals"
+        ]
+      },
+      {
+        icon: "CL",
+        title: "Cloud & Tools",
+        items: [
+          "AWS Fundamentals",
+          "Git",
+          "GitHub",
+          "VS Code"
+        ]
+      }
+    ];
+
+    function Skills() {
+      return (
+        <section id="skills">
+          <Reveal className="section-head">
+            <div className="section-tag">Skills</div>
+            <h2 className="section-title">Technical Skills</h2>
+            <p className="section-sub">Tools and technologies I use to design, build, and ship full-stack applications.</p>
+          </Reveal>
+          <div className="skills-grid">
+            {skillData.map((s, i) => (
+              <Reveal className="skill-card" delay={i * 0.05} key={s.title}>
+                <div className="icon">{s.icon}</div>
+                <h3>{s.title}</h3>
+                <div className="tag-row">
+                  {s.items.map(it => <span className="tag" key={it}>{it}</span>)}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    function MockScreen({ variant }) {
+      return (
+        <div className="mock-browser">
+          <div className="mock-bar">
+            <span className="mock-dot"></span><span className="mock-dot"></span><span className="mock-dot"></span>
+          </div>
+          <div className="mock-body">
+            <div className="mock-line w40"></div>
+            <div className="mock-line w80"></div>
+            <div className="mock-line w60"></div>
+            {variant === "ecom" ? (
+              <div className="mock-grid">
+                <div className="mock-box"></div><div className="mock-box"></div><div className="mock-box"></div>
+                <div className="mock-box"></div><div className="mock-box"></div><div className="mock-box"></div>
+              </div>
+            ) : (
+              <>
+                <div className="mock-line w80" style={{ marginTop: "1rem" }}></div>
+                <div className="mock-line w40"></div>
+                <div className="mock-pill">● Live chat connected</div>
+              </>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    function Projects() {
+      return (
+        <section id="projects">
+          <Reveal className="section-head">
+            <div className="section-tag">Projects</div>
+            <h2 className="section-title">Selected Work</h2>
+            <p className="section-sub">Full-stack applications built end-to-end — from database schema to deployable UI.</p>
+          </Reveal>
+
+          <Reveal>
+            <div className="project-card">
+              <div className="project-visual">
+                <img
+                  src="images/Screenshot (619).png"
+                  alt="Lavogue Project"
+                  className="project-image"
+                />
+                <img
+                  src="images/Screenshot (618).png"
+                  alt="Lavogue Project"
+                  className="project-image"
+                />
+              </div>
+
+              <div className="project-info">
+                <div className="ptag">E-Commerce Platform</div>
+
+                <h3>Lavogue</h3>
+
+                <p>
+                  A production-ready fashion eCommerce platform with dynamic product
+                  listings, Add to Cart, and Wishlist features, supporting seamless
+                  end-to-end shopping. Includes a fully functional admin panel with
+                  product management (add/edit/delete), backed by scalable REST APIs
+                  and optimised MongoDB schemas for products, users, orders, and cart
+                  data, achieving fast query response times.
+                </p>
+
+                <div className="stack-row">
+                  <span className="tag">MongoDB</span>
+                  <span className="tag">Express.js</span>
+                  <span className="tag">React.js</span>
+                  <span className="tag">Node.js</span>
+                  <span className="tag">JWT</span>
+                  <span className="tag">REST APIs</span>
+                </div>
+
+                <a
+                  className="project-link"
+                  href="https://lavogue.onrender.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Live Demo →
+                </a>
+              </div>
+            </div>
+          </Reveal>
+
+
+          <Reveal delay={0.1}>
+            <div className="project-card reverse">
+              <div className="project-visual">
+                <img
+                  src="images/Screenshot (163).png"
+                  alt="Freelance Finder Project"
+                  className="project-image"
+                />
+                <img
+                  src="images/Screenshot (170).png"
+                  alt="Freelance Finder Project"
+                  className="project-image"
+                />
+              </div>
+              <div className="project-info">
+                <div className="ptag">Freelance Marketplace</div>
+                <h3>Freelance Finder</h3>
+                <p>
+                  A full-stack freelance marketplace supporting project posting, bidding, and end-to-end workflow management for clients and freelancers. Integrated real-time bidirectional chat with Socket.io for instant client-freelancer communication, with secure JWT-based authentication and role-based access control for different user types.
+                </p>
+                <div className="stack-row">
+                  <span className="tag">MongoDB</span><span className="tag">Express.js</span>
+                  <span className="tag">React.js</span><span className="tag">Node.js</span>
+                  <span className="tag">JWT</span><span className="tag">Socket.io</span>
+                </div>
+                <a className="project-link" href="https://github.com/likhithatalatam/freelancefinder" target="_blank">View on GitHub →</a>
+              </div>
+            </div>
+          </Reveal>
+        </section>
+      );
+    }
+
+    function Experience() {
+      return (
+        <section id="experience">
+          <Reveal className="section-head">
+            <div className="section-tag">Experience</div>
+            <h2 className="section-title">Internship</h2>
+          </Reveal>
+          <Reveal>
+            <div className="exp-card">
+              <div className="when">2025</div>
+              <div>
+                <h3>Full Stack MERN Developer — Virtual Internship</h3>
+                <div className="org">Smart Bridge</div>
+                <ul>
+                  <li>Developed dynamic full-stack web applications using React.js, Node.js, and Express.js with user-friendly interfaces and backend integration.</li>
+                  <li>Built and integrated RESTful APIs with full CRUD operations using MongoDB, applying schema design.</li>
+                  <li>Followed Agile/Scrum development practices across structured sprint-based mini-projects, improving delivery consistency.</li>
+                  <li>Practised Git/GitHub version control with branching, merging, and pull requests in a collaborative team environment.</li>
+                </ul>
+              </div>
+            </div>
+          </Reveal>
+        </section>
+      );
+    }
+
+    const achievements = [
+      { badge: "🎓", title: "B.Tech — CSE", desc: "Ideal Institute of Technology, Kakinada", meta: "2022–2026 · CGPA 7.7/10" },
+      { badge: "📜", title: "Full Stack Development", desc: "Certification course covering the complete MERN stack.", meta: "SmartBridge" },
+      { badge: "📜", title: "JavaScript Essentials", desc: "Foundational and advanced JavaScript concepts.", meta: "Cisco Networking Academy" },
+      { badge: "📝", title: "Published Research Paper", desc: "\"Python-Based Virtual Assistant: Enhancing with AI and File Extensions\" — a paper on a Python-based AI virtual assistant using voice command recognition and file automation with AI/ML techniques.", meta: "Dizhen Dizhi Journal" },
+    ];
+
+    function Achievements() {
+      return (
+        <section id="achievements">
+          <Reveal className="section-head">
+            <div className="section-tag">Achievements</div>
+            <h2 className="section-title">Education & Recognition</h2>
+          </Reveal>
+          <div className="achieve-grid">
+            {achievements.map((a, i) => (
+              <Reveal className="achieve-card" delay={i * 0.06} key={a.title}>
+                <div className="badge">{a.badge}</div>
+                <h3>{a.title}</h3>
+                <p>{a.desc}</p>
+                <span className="meta">{a.meta}</span>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    function Contact() {
+      return (
+        <section id="contact">
+          <Reveal className="contact-card">
+            <h2>Let's build something great.</h2>
+            <p>I'm open to fresher MERN Stack Developer roles, internships, and collaborations. Feel free to reach out by email or connect with me on LinkedIn and GitHub.</p>
+            <div className="contact-buttons">
+              <a className="btn btn-primary" href="mailto:talatamlikhitha844@gmail.com">Email me</a>
+              <a className="btn btn-outline" href="https://linkedin.com/in/likhitha-talatam" target="_blank">LinkedIn</a>
+              <a className="btn btn-outline" href="https://github.com/likhithatalatam" target="_blank">GitHub</a>
+            </div>
+          </Reveal>
+        </section>
+      );
+    }
+
+    function App() {
+      return (
+        <>
+          <CursorGlow />
+          <Nav />
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Experience />
+          <Achievements />
+          <Contact />
+          <footer>© 2026 Likhitha Talatam · Kakinada, Andhra Pradesh, India</footer>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+
+</html>
